@@ -39,7 +39,7 @@ Use the given pseudocode to write a program. This task unlike task one uses **Ti
 ```sh
    If Timezone >= 0 && <=4 Then
       reward = "80" 
-   ElseIf Timezone >= >=5 && <= 12 Then
+   ElseIf Timezone >=5 && <= 12 Then
       reward = "40" 
    Else
       reward = "30"
@@ -50,7 +50,7 @@ Use the given pseudocode to write a program. This task unlike task one uses **Ti
 ### Task 3
 Use the given pseudocode to write a program. This task combines **task 1 & 2**, goal is to have a program that rewards nodes based on architecture(CPU type or type of operating system)
 
-####  Rewards based on Timezone(UTC(GMT)) 
+####  Split Rewards 
 (numbers given represents  token rewarded each time a block is produced)
 
 ```sh
@@ -58,7 +58,7 @@ If platform >= ARM
  {
      If Timezone >= 0 && <=4 Then
          reward = "80" 
-     Else Timezone >= >=5 && <= 12 Then
+     Else Timezone >=5 && <= 12 Then
       reward = "40" 
     } 
 ElseIf platform >= windows or MacOs
