@@ -1,4 +1,4 @@
-# Howard_Uni_YesPowerAlgo_Challenge
+# YesPowerAlgo_Challenge
 The objective of this project is to build the rewarding mechanism or module optimized for solar energy access in Africa. To achieve this we must solve the following tasks. The tasks can be solved using the following programming languages: C, C++ and Python
 
 ## Multi-Tier Rewards Architecture Algorithm
@@ -82,7 +82,7 @@ Else
 >Pull all changes, make sure your repository is up to date
 
 ```sh
-$ cd Howard_Uni_YesPowerAlgo_Challenge
+$ cd YesPowerAlgo_Challenge
 $ git pull origin master
 ```
 
@@ -123,4 +123,4 @@ reward_split.cpp
 
 4.Commit the changes to your fork.
 
-5.Make a pull request to the **Howard_Uni_YesPowerAlgo_Challenge** Repo.
+5.Make a pull request to the **YesPowerAlgo_Challenge** Repo.
