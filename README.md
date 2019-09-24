@@ -65,7 +65,7 @@ ElseIf platform >= windows or MacOs
 {
      If Timezone >= 0 && <=4 Then
          reward = "20" 
-      Else Timezone >= >=5 && <= 12 Then
+      Else Timezone >=5 && <= 12 Then
       reward = "10"
     }
 Else
