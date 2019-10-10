@@ -1,41 +1,44 @@
-import sys
-from time import gmtime, strftime
+import datetime
+import os
 
-def get_platform():
-    platforms = {
-        'linux1' : 'Linux',
-        'linux2' : 'Linux',
-        'linux' : 'Linux',
-        'darwin' : 'OS X',
-        'win32' : 'Windows'
-    }
-    if sys.platform not in platforms:
-        return sys.platform
-    return platforms[sys.platform]
+def get_processor_reward():
+    """Returns reward percentage based on machine processor."""
+    processor = os.uname().machine
+    if processor.startswith('x86_64'):
+        return 35
+    elif processor.startswith('arm'):
+        return 55
+    else:
+        return 10
 
 def get_timezone():
-    return strftime("%z", gmtime())
+    """Returns number of hours machine's timezone is behind utc's timezone."""
+    time_difference = datetime.datetime.utcnow() - datetime.datetime.now()
+    return time_difference.total_seconds() / 3600
 
-def reward():
-    platform = get_platform()
-    timezone = int(get_timezone())
-    reward = 0
-    if platform == 'ARM':
-        reward = 0.4
-    elif platform == "Windows":
-        reward = 0.1
-    elif platform == 'OS X':
-        reward = 0.2
-    elif platform == 'Linux':
-        reward = 0.3
-    else:
-        reward = 0
-    
-    if timezone >= 0 and timezone <= 400:
-      reward *= .80
-    elif timezone >= 500 and timezone <= 1200:
-      reward *= .40
-    else:
-      reward *= .30
-    return reward
-reward()
+def get_timezone_reward():
+    """Returns reward percentage based on machine's timezone."""
+    timezone = get_timezone()
+    # TODO(henxing): Implement this after understanding the pseudocode.
+    pass
+
+def get_machine_coordinates_reward(coordinates):
+    # TODO(henxing): Implement this after understanding the design doc.
+    pass
+
+def get_device_coordinates():
+    """Returns latitude and longitude of device as a tuple."""
+    # TODO(henxing): Implement this after finding a way to find device's
+    #                coordinate.
+    pass
+
+def get_multi_tier_reward():
+    # TODO(henxing): Implement after understanding design doc.
+    device_coordinates = get_device_coordinates()
+    location_reward = get_machine_coordinates_reward(
+            device_coordinates) if device_coordinates else get_timezone_reward()
+    processor_reward = get_processor_reward()
+    total_percentage_reward = (location_reward + processor_reward) / 2
+    return total_percentage_reward
+
+
