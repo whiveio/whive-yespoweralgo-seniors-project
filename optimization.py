@@ -41,6 +41,9 @@ def get_timezone():
 
 def get_timezone_reward():
     """Returns reward percentage based on machine's timezone."""
+    # TODO(henxing): This returned value can be negative. All timezones are
+    #                positive. Either make timezone +ve and -ve or adjust the
+    #                computed timezone.
     timezone = get_timezone()
     if LATEST_TIMEZONE < timezone >= EARLIEST_AFRICAN_TIMEZONE:
         return 35
@@ -53,9 +56,9 @@ def get_timezone_reward():
 
 def get_machine_coordinates_reward(device_coordinates):
     """Returns percentage reward based on the input coordinates."""
-    x_coordinate, y_coordinate = device_coordinates
-    if LEFT_BOUND <= x_coordinate <= RIGHT_BOUND and BOTTOM_BOUND <= y_coordinate <= TOP_BOUND:
-        return (abs(x_coordinate) + abs(y_coordinate))/MAX_COORDINATES_SUM
+    latitude, longitude = device_coordinates
+    if LEFT_BOUND <= latitude <= RIGHT_BOUND and BOTTOM_BOUND <= longitude <= TOP_BOUND:
+        return (abs(latitude) + abs(longitude)) / MAX_COORDINATES_SUM
     else:
         return 5
 
