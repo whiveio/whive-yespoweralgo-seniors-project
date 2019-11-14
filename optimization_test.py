@@ -25,17 +25,45 @@ class TestOptimzation(unittest.TestCase):
         processor_reward = optimization.get_processor_reward()
         self.assertEqual(processor_reward, 10)
 
-    def test_get_machine_coordinates_reward_coordinates_in_the_rectangle(self):
-        coordinates = [86.12, 25.22]
-        reward = sum([abs(x) for x in coordinates])/optimization.MAX_COORDINATES_SUM
+    def test_get_machine_coordinates_reward_coordinates_carribean_region(self):
+        """Tests the reward received by node in Carribean region."""
+        longitude, latitude = -80.12, 25.22
+        self.assertEqual(
+                optimization.get_machine_coordinates_reward(
+                    latitude, longitude),
+                optimization.CARRIBEAN_REGION_REWARD)
 
-        machine_coordinates_reward = optimization.get_machine_coordinates_reward(coordinates)
-        self.assertEqual(machine_coordinates_reward, reward)
+    def test_get_machine_coordinates_reward_coordinates_sa_region(self):
+        """Tests the reward received by node in South American region."""
+        longitude, latitude = -65.12, -5.01
+        self.assertEqual(
+                optimization.get_machine_coordinates_reward(
+                    latitude, longitude),
+                optimization.SOUTH_AMERICAN_REGION_REWARD)
 
-    def test_get_machine_coordinates_reward_coordinates_not_in_the_rectangle(self):
-        coordinates = [86.12, 35.22]
-        machine_coordinates_reward = optimization.get_machine_coordinates_reward(coordinates)
-        self.assertEqual(machine_coordinates_reward, 5)
+    def test_get_machine_coordinates_reward_coordinates_african_region(self):
+        """Tests the reward received by node in African region."""
+        longitude, latitude = 0, -15.01
+        self.assertEqual(
+                optimization.get_machine_coordinates_reward(
+                    latitude, longitude),
+                optimization.AFRICAN_REGION_REWARD)
+
+    def test_get_machine_coordinates_reward_coordinates_asian_region(self):
+        """Tests the reward received by node in Asian region."""
+        longitude, latitude = 60, 0
+        self.assertEqual(
+                optimization.get_machine_coordinates_reward(
+                    latitude, longitude),
+                optimization.ASIAN_REGION_REWARD)
+
+    def test_get_machine_coordinates_reward_coordinates_other_region(self):
+        """Tests the reward received by node in Other region."""
+        longitude, latitude = -89, 78
+        self.assertEqual(
+                optimization.get_machine_coordinates_reward(
+                    latitude, longitude),
+                optimization.OTHER_REGION_REWARD)
     
     @mock.patch.object(optimization, 'get_timezone')
     def test_get_timezone_reward_earliest_europe_and_earliest_africa_timezone(
