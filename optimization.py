@@ -27,8 +27,7 @@ AFRICAN_REGION_REWARD = 45
 ASIAN_REGION_REWARD = 15
 OTHER_REGION_REWARD = 5
 
-# This constant value is used to compute machine coordinates percentage reward.
-MAX_COORDINATES_SUM = 120
+TOTAL_YESPOWER_REWARD = 103.125
 
 
 def get_processor_reward():
@@ -97,5 +96,9 @@ def get_multi_tier_reward():
     location_reward = get_machine_coordinates_reward(
             device_coordinates.latlng) if device_coordinates else get_timezone_reward()
     processor_reward = get_processor_reward()
-    total_percentage_reward = (location_reward + processor_reward) / 2
+    # location reward is 50% of TOTAL_YESPOWER_REWARD
+    # processor reward is 50% of TOTAL_YESPOWER_REWARD
+    total_percentage_reward = (location_reward * (
+        0.5 * TOTAL_YESPOWER_REWARD)  + processor_reward * (
+            0.5 * TOTAL_YESPOWER_REWARD)) / 2
     return total_percentage_reward
