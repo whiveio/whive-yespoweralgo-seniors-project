@@ -3,15 +3,10 @@ import geocoder
 import os
 
 # Offsets of different timezones with respect to GMT
-EARLIEST_AFRICAN_TIMEZONE = 23
+EARLIEST_AFRICAN_TIMEZONE = -1
 LATEST_AFRICAN_TIMEZONE = 4
-EARLIES_ASIAN_TIMEZONE = 5
-
-# Earliest european timezone and latest timezone are same timezone.
-# 24 is used because we want to find the devices with offset in the range 
-# (23, 24]. Using 0 would not work here.
+EARLIEST_ASIAN_TIMEZONE = 5
 EARLIEST_EUROPEAN_TIMEZONE = 0
-LATEST_TIMEZONE = 24
 
 # Coorindate points that form optimal rectangle in the globe.
 # Device with (latitude, longitude) that is inside this rectangle gets maximum
@@ -36,20 +31,17 @@ def get_processor_reward():
 
 def get_timezone():
     """Returns number of hours machine's timezone is behind utc's timezone."""
-    time_difference = datetime.datetime.utcnow() - datetime.datetime.now()
+    time_difference = datetime.datetime.now() - datetime.datetime.utcnow()
     return time_difference.total_seconds() / 3600
 
 def get_timezone_reward():
     """Returns reward percentage based on machine's timezone."""
-    # TODO(henxing): This returned value can be negative. All timezones are
-    #                positive. Either make timezone +ve and -ve or adjust the
-    #                computed timezone.
     timezone = get_timezone()
-    if LATEST_TIMEZONE < timezone >= EARLIEST_AFRICAN_TIMEZONE:
+    if EARLIEST_AFRICAN_TIMEZONE < timezone <= EARLIEST_EUROPEAN_TIMEZONE:
         return 35
-    elif LATEST_AFRICAN_TIMEZONE < timezone >= EARLIEST_EUROPEAN_TIMEZONE:
+    elif EARLIEST_EUROPEAN_TIMEZONE < timezone <= LATEST_AFRICAN_TIMEZONE:
         return 45
-    elif EARLIEST_ASIAN_TIMEZONE < timezone >= LATEST_AFRICAN_TIMEZONE:
+    elif LATEST_AFRICAN_TIMEZONE < timezone <= EARLIEST_ASIAN_TIMEZONE:
         return 15
     else:
         return 5
