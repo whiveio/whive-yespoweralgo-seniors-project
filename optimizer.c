@@ -1,4 +1,4 @@
-/* GitHub Devs: Algorthim designed by @qwainaina, python by @henchhing-limbu, cpp by @ajazayeri72 */
+/* GitHub Devs: Algorthim designed by @qwainaina, python by @henchhing-limbu, cpp & c by @ajazayeri72 */
 #include <stdio.h>
 #include <time.h>
 
