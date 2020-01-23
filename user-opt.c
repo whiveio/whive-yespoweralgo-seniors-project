@@ -1,7 +1,7 @@
 /*GitHub Devs: Algorithm designed by @qwainaina, python by @henchhing-limbu, cpp & c by @ajazayeri72*/
 
 #include "real.h"
-
+#include <stdlib.h>
 
 //Main function
 int main() {
