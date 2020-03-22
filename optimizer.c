@@ -10,9 +10,9 @@
 #define EARLIEST_EUROPEAN_TIMEZONE 0
 
 //Define Regional Rewards
-#define CARRIBEAN_REGION_REWARD 20
+#define CARRIBEAN_REGION_REWARD 15
 #define SOUTH_AMERICAN_REGION_REWARD 15
-#define AFRICAN_REGION_REWARD 45
+#define AFRICAN_REGION_REWARD 50
 #define ASIAN_REGION_REWARD 15
 #define OTHER_REGION_REWARD 5
 
@@ -24,7 +24,7 @@
 
 struct coordinate
 {
-    int top_left_x;
+  int top_left_x;
 	int top_left_y;
 	int bottom_right_x;
 	int bottom_right_y;
@@ -55,13 +55,13 @@ struct coordinate ASIAN_REGION;
 //Get Processor Reward %
 int get_processor_reward() {
 	if (OS_WINDOWS) {
-		return 20;
+		return 10;
 	}
 	else if (OS_ARM) {
-		return 50;
+		return 70;
 	}
 	else {
-		return 30;
+		return 20;
 	}
 }
 
@@ -128,27 +128,37 @@ int main() {
     AFRICAN_REGION = RegionCoordiantes(-20, 30, 50, -45);
     ASIAN_REGION = RegionCoordiantes(50, 30, 90, -30);
 
+    //Integrate optimizer to ensure people randomly to set hash from o score; Contributions by whive devs in optimizer.h
+    //define_coordinates();
     int timezone_reward = get_time_zone_reward();
+    int location_reward = get_machine_coordinates_reward(-1.3073685,36.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
+    int process_reward = get_processor_reward();
 
-    int location_reward = 0; //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
+    printf("Location Reward: %d \n", location_reward);
 
-	int process_reward = get_processor_reward();
+    float total_percentage_reward = ((location_reward * 2 / 6) + (timezone_reward * 2 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
 
-	//Float total_percentage_reward = ((location_reward * (0.6)) + (process_reward * (0.4)));
-	//Float total_percentage_reward = ((location_reward * 3 / 6) + (timezone_reward * 1 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
-	float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
+    //float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
 
-    int o = (int)total_percentage_reward; //Generating optimization score o as an integer
-	printf("Total Percentage Reward: %d \n", o);
-
-    if (o  > 14)
+    if (location_reward == 0)
     {
-    //Use rand function to generate random number between (0 and total_percentage_reward);
+    total_percentage_reward=total_percentage_reward-5; //Penalize a CPU by 5% if it can't be geo-located
+    }
+
+    int opt = (int)total_percentage_reward; //Generating optimization score o as an integer
+    printf("Total Percentage Reward: %d \n", opt);
+
+    //Integrate optimizer to ensure people randomly to set hash from opt score
+    //Get randomizer score and compare to opt score
     int randomNumber;
-    srand((unsigned) time(NULL)); //Make number random each time
-    randomNumber = (rand() % 45) + 1; //Made the max 45 instead of 100 % more forgiving
-    printf("Randomizer: %d \n", randomNumber);
-    if (randomNumber <= o)
+  	srand((unsigned) time(NULL)); //Make number random each time
+  	randomNumber = (rand() % 45) + 1; //Made the max 45 instead of 100 % more forgiving
+  	printf("Randomizer: %d", randomNumber);
+    /* Sanity check using O score & Randomizer added by @qwainaina*/
+
+    if (opt  > 14)
+    {
+      if (randomNumber <= opt)
         {
         printf("Create YP Hash: Success\n");
 
