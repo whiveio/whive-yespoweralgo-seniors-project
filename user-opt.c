@@ -12,6 +12,7 @@ int main() {
     int location_reward = 0; //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
 
 	int process_reward = get_processor_reward();
+	printf("cpu reward: %d \n", process_reward);
 
 	//Float total_percentage_reward = ((location_reward * (0.6)) + (process_reward * (0.4)));
 	//Float total_percentage_reward = ((location_reward * 3 / 6) + (timezone_reward * 1 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
