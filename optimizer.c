@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include <time.h>
 
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 
 //Define Time Zones
 #define EARLIEST_AFRICAN_TIMEZONE -1
@@ -22,6 +32,7 @@
 #define OS_ARM 1
 #define OS_WINDOWS 0
 
+/*
 struct coordinate
 {
   int top_left_x;
@@ -43,7 +54,7 @@ struct coordinate CARRIBEAN_REGION;
 struct coordinate SOUTH_AMERICAN_REGION;
 struct coordinate AFRICAN_REGION;
 struct coordinate ASIAN_REGION;
-
+*/
 
 #ifdef __arm__
 #define OS_ARM 1
@@ -79,27 +90,27 @@ int get_timezone() {
 int get_time_zone_reward() {
 	int timezone = get_timezone();
 	if ((EARLIEST_AFRICAN_TIMEZONE < timezone) && (timezone <= EARLIEST_EUROPEAN_TIMEZONE)) {
-		return 40;
+		return 35;
 	}
 	else
 	{
 		if ((EARLIEST_EUROPEAN_TIMEZONE < timezone) && (timezone <= LATEST_AFRICAN_TIMEZONE)) {
-			return 30;
+			return 35;
 		}
 		else
 		{
 			if ((LATEST_AFRICAN_TIMEZONE < timezone) && (timezone <= EARLIEST_ASIAN_TIMEZONE)) {
-				return 20;
+				return 25;
 			}
 			else
 			{
-				return 10;
+				return 5;
 			}
 		}
 	}
 }
 
-
+/*
 //Get timezone score
 int get_machine_coordinates_reward(double latitude, double longitude)
 {
@@ -119,32 +130,80 @@ int get_machine_coordinates_reward(double latitude, double longitude)
 		return OTHER_REGION_REWARD;
 	}
 }
-
+*/
 
 //Main function
 int main() {
+
+    //Cores Code 26/03/2020
+
+    	int nprocs = -1;
+	int nprocs_max = -1;
+
+#ifdef _WIN32
+#ifndef _SC_NPROCESSORS_ONLN
+	SYSTEM_INFO info;
+	GetSystemInfo(&info);
+#define sysconf(a) info.dwNumberOfProcessors
+#define _SC_NPROCESSORS_ONLN
+#endif
+#endif
+#ifdef _SC_NPROCESSORS_ONLN
+
+	nprocs = sysconf(_SC_NPROCESSORS_ONLN);
+	if (nprocs < 1)
+
+	{
+		printf(stderr, "Could not determine number of CPUs online:\n%s\n");
+
+	}
+
+	nprocs_max = sysconf(_SC_NPROCESSORS_CONF);
+	if (nprocs_max < 1)
+	{
+
+		printf(stderr, "Could not determine number of CPUs configured:\n%s\n");
+
+	}
+	printf("%ld of %ld processors online\n", nprocs, nprocs_max);
+
+#else
+	printf(stderr, "Could not determine number of CPUs");
+#endif
+
+    //End of Cores
+
+    /*
     CARRIBEAN_REGION = RegionCoordiantes(-90, 30, -45, 15);
     SOUTH_AMERICAN_REGION = RegionCoordiantes(-90, 15, -30, -60);
     AFRICAN_REGION = RegionCoordiantes(-20, 30, 50, -45);
     ASIAN_REGION = RegionCoordiantes(50, 30, 90, -30);
+    */
 
     //Integrate optimizer to ensure people randomly to set hash from o score; Contributions by whive devs in optimizer.h
     //define_coordinates();
     int timezone_reward = get_time_zone_reward();
-    int location_reward = get_machine_coordinates_reward(-1.3073685,36.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
+    //int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
     int process_reward = get_processor_reward();
 
-    printf("Location Reward: %d \n", location_reward);
+    if (nprocs > 2)
+    {
+       process_reward= process_reward * 2 / nprocs; //this penalizes machines using more than 2 cores by the number of cores they are using.
+    }
 
-    float total_percentage_reward = ((location_reward * 2 / 6) + (timezone_reward * 2 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
+    printf("Timezone Reward: %d \n", timezone_reward);
+    //printf("Location Reward: %d \n", location_reward);
+    printf("Process Reward: %d \n", process_reward);
 
-    //float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
+    //float total_percentage_reward = ((location_reward * 2 / 6) + (timezone_reward * 2 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
 
+    float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
+    /*
     if (location_reward == 0)
     {
     total_percentage_reward=total_percentage_reward-5; //Penalize a CPU by 5% if it can't be geo-located
     }
-
+    */
     int opt = (int)total_percentage_reward; //Generating optimization score o as an integer
     printf("Total Percentage Reward: %d \n", opt);
 
@@ -153,7 +212,7 @@ int main() {
     int randomNumber;
   	srand((unsigned) time(NULL)); //Make number random each time
   	randomNumber = (rand() % 45) + 1; //Made the max 45 instead of 100 % more forgiving
-  	printf("Randomizer: %d", randomNumber);
+  	printf("Randomizer: %d \n", randomNumber);
     /* Sanity check using O score & Randomizer added by @qwainaina*/
 
     if (opt  > 14)
