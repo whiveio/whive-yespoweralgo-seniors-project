@@ -91,6 +91,7 @@ int get_time_zone_reward() {
 	int timezone = get_timezone();
 	if ((EARLIEST_AFRICAN_TIMEZONE < timezone) && (timezone <= EARLIEST_EUROPEAN_TIMEZONE)) {
 		return 30;
+
 	}
 	else
 	{
