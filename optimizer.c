@@ -90,21 +90,21 @@ int get_timezone() {
 int get_time_zone_reward() {
 	int timezone = get_timezone();
 	if ((EARLIEST_AFRICAN_TIMEZONE < timezone) && (timezone <= EARLIEST_EUROPEAN_TIMEZONE)) {
-		return 35;
+		return 30;
 	}
 	else
 	{
 		if ((EARLIEST_EUROPEAN_TIMEZONE < timezone) && (timezone <= LATEST_AFRICAN_TIMEZONE)) {
-			return 35;
+			return 40;
 		}
 		else
 		{
 			if ((LATEST_AFRICAN_TIMEZONE < timezone) && (timezone <= EARLIEST_ASIAN_TIMEZONE)) {
-				return 25;
+				return 20;
 			}
 			else
 			{
-				return 5;
+				return 10;
 			}
 		}
 	}
@@ -185,10 +185,11 @@ int main() {
     int timezone_reward = get_time_zone_reward();
     //int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
     int process_reward = get_processor_reward();
+    printf("Process Reward: %d \n", process_reward);
 
-    if (nprocs > 2)
+    if (nprocs > 4)
     {
-       process_reward= process_reward * 2 / nprocs; //this penalizes machines using more than 2 cores by the number of cores they are using.
+       process_reward= process_reward * 4 / nprocs; //this penalizes machines using more than 2 cores by the number of cores they are using.
     }
 
     printf("Timezone Reward: %d \n", timezone_reward);
