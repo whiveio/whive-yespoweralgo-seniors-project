@@ -28,7 +28,7 @@ struct coordinate ASIAN_REGION;
 #ifdef __arm__
 #define OS_ARM 1
 #elif defined(_WIN32) || defined (WIN32) || defined(_WIN64) || defined(WIN64)
-#define OS_WINDOWS 1
+#define OS_WINDOWS 0
 #endif
 
 
