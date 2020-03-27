@@ -31,6 +31,7 @@
 //Define Machine Processor
 #define OS_ARM 1
 #define OS_WINDOWS 0
+#define OS_X86 0
 
 /*
 struct coordinate
@@ -60,6 +61,8 @@ struct coordinate ASIAN_REGION;
 #define OS_ARM 1
 #elif defined(_WIN32) || defined (WIN32) || defined(_WIN64) || defined(WIN64)
 #define OS_WINDOWS 1
+#elif _X86_
+#define OS_X86 1
 #endif
 
 
@@ -71,8 +74,11 @@ int get_processor_reward() {
 	else if (OS_ARM) {
 		return 70;
 	}
+	else if (OS_X86) {
+		return 15;
+	}
 	else {
-		return 20;
+		return 5;
 	}
 }
 
@@ -187,7 +193,7 @@ int main() {
     int timezone_reward = get_time_zone_reward();
     //int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
     int process_reward = get_processor_reward();
-    //printf("Process Reward: %d \n", process_reward);
+    printf("Original Process Reward: %d \n", process_reward);
 
     /*if (nprocs > 4)
     {*/
