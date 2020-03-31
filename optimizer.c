@@ -220,7 +220,7 @@ int main() {
     //Get randomizer score and compare to opt score
     int randomNumber;
   	srand((unsigned) time(NULL)); //Make number random each time
-  	randomNumber = (rand() % 45) + 1; //Made the max 45 instead of 100 % more forgiving
+  	randomNumber = (rand() % 55) + 1; //Made the max 55 instead of 100 % more forgiving
   	printf("Randomizer: %d \n", randomNumber);
     /* Sanity check using O score & Randomizer added by @qwainaina*/
 
