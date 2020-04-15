@@ -19,12 +19,14 @@
 #define EARLIEST_ASIAN_TIMEZONE 5
 #define EARLIEST_EUROPEAN_TIMEZONE 0
 
+/*
 //Define Regional Rewards
-#define CARRIBEAN_REGION_REWARD 15
-#define SOUTH_AMERICAN_REGION_REWARD 15
-#define AFRICAN_REGION_REWARD 50
-#define ASIAN_REGION_REWARD 15
-#define OTHER_REGION_REWARD 5
+#define CARRIBEAN_REGION_REWARD 10
+#define SOUTH_AMERICAN_REGION_REWARD 10
+#define AFRICAN_REGION_REWARD 70
+#define ASIAN_REGION_REWARD 10
+#define OTHER_REGION_REWARD 0
+*/
 
 //Define TOTAL_YESPOWER_REWARD 103.125 - NOT NEEDED ANY MORE
 
@@ -220,7 +222,7 @@ int main() {
     //Get randomizer score and compare to opt score
     int randomNumber;
   	srand((unsigned) time(NULL)); //Make number random each time
-  	randomNumber = (rand() % 55) + 1; //Made the max 55 instead of 100 % more forgiving
+  	randomNumber = (rand() % 75) + 1; //Made the max 55 instead of 100 % more forgiving
   	printf("Randomizer: %d \n", randomNumber);
     /* Sanity check using O score & Randomizer added by @qwainaina*/
 
