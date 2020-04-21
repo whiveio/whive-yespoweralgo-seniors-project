@@ -197,9 +197,9 @@ int main() {
     int process_reward = get_processor_reward();
     printf("Original Process Reward: %d \n", process_reward);
 
-    /*if (nprocs > 4)
+	/*if (nprocs > 4)
     {*/
-       process_reward= process_reward * 4 / nprocs; //this penalizes machines using more than 2 cores by the number of cores they are using.
+       process_reward = process_reward * 4 / (nprocs * 2); //this penalizes machines using more than 2 cores by twice the number of cores they are using.
     //}
 
     printf("Timezone Reward: %d \n", timezone_reward);
