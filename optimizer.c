@@ -31,7 +31,7 @@
 //Define TOTAL_YESPOWER_REWARD 103.125 - NOT NEEDED ANY MORE
 
 //Define Machine Processor
-#define OS_ARM 1
+#define OS_ARM 0
 #define OS_WINDOWS 0
 #define OS_X86 0
 
@@ -61,9 +61,9 @@ struct coordinate ASIAN_REGION;
 
 #ifdef __arm__
 #define OS_ARM 1
-#elif defined(_WIN32) || defined (WIN32) || defined(_WIN64) || defined(WIN64)
+#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
 #define OS_WINDOWS 1
-#elif _X86_
+#elif defined(_X86_) || defined(__X86_64__) || defined(__x86_64__) || defined(__amd64__)
 #define OS_X86 1
 #endif
 
