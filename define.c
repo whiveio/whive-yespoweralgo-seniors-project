@@ -1,6 +1,6 @@
 #ifndef DEFI_h
 #define DEFI_h
-#include "locator.h"
+//#include "locator.h"
 #endif
 
 
@@ -165,4 +165,3 @@ void parse(char* json, char* key, char* val)
 
 	return(realsize);
 }
-
