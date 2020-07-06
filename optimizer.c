@@ -1,4 +1,4 @@
-/* GitHub Devs: Algorthim designed by @qwainaina, python by @henchhing-limbu, cpp & c by @ajazayeri72 */
+/* GitHub Devs: Algorthim designed by @qwainaina, python by @henchhing-limbu, cpp & c by @ajazayeri72, locator code structure audit @xephy @LwandaMagere */
 #include <stdio.h>
 #include <time.h>
 
@@ -12,6 +12,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+
+//locator definitions
+#include "locator.h"
+#include "define.c"
 
 //Define Time Zones
 #define EARLIEST_AFRICAN_TIMEZONE -1
@@ -120,7 +124,7 @@ int get_time_zone_reward() {
 	}
 }
 
-/*
+
 //Get timezone score
 int get_machine_coordinates_reward(double latitude, double longitude)
 {
@@ -140,7 +144,7 @@ int get_machine_coordinates_reward(double latitude, double longitude)
 		return OTHER_REGION_REWARD;
 	}
 }
-*/
+
 
 //Main function
 int main() {
@@ -183,18 +187,92 @@ int main() {
 
     //End of Cores
 
-    /*
+
+		//locator Code
+		CURL* curl;
+		CURLcode res;
+		char csv_field[BUFSIZE];
+		struct location url;
+		struct web_data curl_data;
+
+		/* initialize structure */
+		/* curl_data and url structures must be kept separate or the
+			 call the curl makes to write_mem() screws up */
+
+		curl_data.buffer =  (char *) malloc(1);
+		curl_data.size = 0;
+		url.latitude = 0.0;
+		url.longitude = 0.0;
+
+		/* initialize locations */
+		strcpy(url.address, "http://ip-api.com/csv/");
+
+		/* initialuze curl */
+		/* I use the same curl handle for all of the calls,
+			 so only only statement is needed here */
+		curl = curl_easy_init();
+
+		/*---------------- FIRST READ ----------------*/
+		/* set options */
+			/* url to read */
+		curl_easy_setopt(curl, CURLOPT_URL, url.address);
+		/* The function to read in data chunks */
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_mem);
+		/* The structure to use for reading */
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &curl_data);
+		/* make the call */
+		res = curl_easy_perform(curl);
+		/* confirm that the call was successful, bail if not */
+		if (res != CURLE_OK)
+		{
+			fprintf(stderr, "Curl read failed: %s\n",
+				curl_easy_strerror(res)
+				);
+			exit(1);
+		}
+
+		/* At this point, the size of the data read is stored in curl_data.size
+			 and the string read is in curl_data.buffer. The data is in CSV format,
+			 which the fetch() function can read */
+			 /* was the call successful? Fetch the first CSV item from the buffer and
+				store it in buffer 'csv_field' */
+		fetch(1, curl_data.buffer, csv_field);
+		/* if the string csv_field isn't 'success' then the call failed */
+		if (strncmp(csv_field, "success", 7) != 0)
+		{
+			fprintf(stderr, "Failed request from server: %s\n", url.address);
+			fprintf(stderr, "Retried status: %s\n", csv_field);
+			exit(1);
+		}
+
+		/* Get the latitude value & convert to double */
+		fetch(8, curl_data.buffer, csv_field);
+		url.latitude = strtod(csv_field, NULL);
+
+		/* Get the longitude value & convert to double */
+		fetch(9, curl_data.buffer, csv_field);
+		url.longitude = strtod(csv_field, NULL);
+
+		printf("Latitude: %lf\n", url.latitude);
+		printf("Longitude: %lf\n", url.longitude);
+
+		/*
+		printf("\nPress Any Key to Continue...\n");
+		getchar();
+		*/
+
     CARRIBEAN_REGION = RegionCoordiantes(-90, 30, -45, 15);
     SOUTH_AMERICAN_REGION = RegionCoordiantes(-90, 15, -30, -60);
     AFRICAN_REGION = RegionCoordiantes(-20, 30, 50, -45);
     ASIAN_REGION = RegionCoordiantes(50, 30, 90, -30);
-    */
+
 
     //Integrate optimizer to ensure people randomly to set hash from o score; Contributions by whive devs in optimizer.h
     //define_coordinates();
     int timezone_reward = get_time_zone_reward();
-    //int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
-    int process_reward = get_processor_reward();
+  	//int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
+		int location_reward = get_machine_coordinates_reward(url.latitude,url.longitude); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
+		int process_reward = get_processor_reward();
     printf("Original Process Reward: %d \n", process_reward);
 
 	/*if (nprocs > 4)
@@ -203,12 +281,14 @@ int main() {
     //}
 
     printf("Timezone Reward: %d \n", timezone_reward);
-    //printf("Location Reward: %d \n", location_reward);
+    printf("Location Reward: %d \n", location_reward);
     printf("Process Reward: %d \n", process_reward);
 
-    //float total_percentage_reward = ((location_reward * 2 / 6) + (timezone_reward * 2 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
 
-    float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
+
+    float total_percentage_reward = ((location_reward * 2 / 6) + (timezone_reward * 2 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
+
+    //float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
     /*
     if (location_reward == 0)
     {
