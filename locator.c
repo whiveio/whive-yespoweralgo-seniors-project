@@ -1,5 +1,5 @@
 #include "locator.h"
-#include "locator.c"
+#include "define.c"
 
 int main()
 {
