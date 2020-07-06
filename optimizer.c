@@ -283,9 +283,7 @@ int main() {
     printf("Location Reward: %d \n", location_reward);
     printf("Process Reward: %d \n", process_reward);
 
-
-
-    float total_percentage_reward = ((location_reward * 2 / 6) + (timezone_reward * 2 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
+    float total_percentage_reward = ((location_reward * 3 / 6) + (timezone_reward * 1 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
 
     //float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
     /*
