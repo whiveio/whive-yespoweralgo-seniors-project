@@ -15,8 +15,8 @@ int main()
 
 	curl_data.buffer =  (char *) malloc(1);
 	curl_data.size = 0;
-	url.latitude = 0.0;
-	url.longitude = 0.0;
+	//url.latitude = 0.0;
+	//url.longitude = 0.0;
 
 	/* initialize locations */
 	strcpy(url.address, "http://ip-api.com/csv/");
