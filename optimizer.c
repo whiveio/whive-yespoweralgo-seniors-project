@@ -213,14 +213,16 @@ int main() {
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &curl_data);
 		/* make the call */
 		res = curl_easy_perform(curl);
+
+    int location_reward=0;
+
 		/* confirm that the call was successful, bail if not */
-		if (res != CURLE_OK)
+    if (res != CURLE_OK)
 		{
 			fprintf(stderr, "Curl read failed: %s\n",
 				curl_easy_strerror(res)
 				);
 			//exit(1);
-    int location_reward=0;
 		}
 
 		/* At this point, the size of the data read is stored in curl_data.size
@@ -235,7 +237,7 @@ int main() {
 			fprintf(stderr, "Failed request from server: %s\n", url.address);
 			fprintf(stderr, "Retried status: %s\n", csv_field);
 			//exit(1);
-    int location_reward=0;
+
 		}
 
 		/* Get the latitude value & convert to double */
