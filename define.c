@@ -13,7 +13,8 @@ void fetch(int v, char* csv, char* f)
 	if (v < 1)
 	{
 		fprintf(stderr, "Invalid field for CSV string\n");
-		exit(1);
+		//exit(1);
+		int location_reward=0;
 	}
 
 	/* scan for valid fields and pull them out */
@@ -39,7 +40,8 @@ void fetch(int v, char* csv, char* f)
 				if (bi > BUFSIZE)
 				{
 					fprintf(stderr, "Malformed CSV field\n");
-					exit(1);
+					//exit(1);
+					int location_reward=0;
 				}
 				*(b + bi) = *(cptr);
 			} while (*(b + bi) != '"');
@@ -79,7 +81,8 @@ void fetch(int v, char* csv, char* f)
 
 	/* if we get here, there was some sort of error */
 	fprintf(stderr, "Unable to read field %d from CSV record\n", v);
-	exit(1);
+	//exit(1);
+	int location_reward=0;
 }
 
 void parse(char* json, char* key, char* val)
@@ -95,7 +98,8 @@ void parse(char* json, char* key, char* val)
 		if (*found == '\0')
 		{
 			fprintf(stderr, "Unable to parse value for '%s'\n", key);
-			exit(1);
+			//exit(1);
+			int location_reward=0;
 		}
 		found++;
 	}
@@ -105,7 +109,8 @@ void parse(char* json, char* key, char* val)
 		if (*found == '\0')
 		{
 			fprintf(stderr, "Unable to parse value for '%s'\n", key);
-			exit(1);
+			//exit(1);
+			int location_reward=0;
 		}
 		found++;
 	}
@@ -119,7 +124,8 @@ void parse(char* json, char* key, char* val)
 		if (*size == '\0')
 		{
 			fprintf(stderr, "Unable to parse value for '%s'\n", key);
-			exit(1);
+			//exit(1);
+			int location_reward=0;
 		}
 		size++;
 	}
@@ -132,7 +138,8 @@ void parse(char* json, char* key, char* val)
 		if (*(found + x) == '\0')
 		{
 			fprintf(stderr, "Malformed json value\n");
-			exit(1);
+			//exit(1);
+			int location_reward=0;
 		}
 		*(val + x) = *(found + x);
 		x++;
@@ -153,7 +160,8 @@ void parse(char* json, char* key, char* val)
 	if (mem->buffer == NULL)
 	{
 		fprintf(stderr, "Unable to reallocate buffer\n");
-		exit(1);
+		//exit(1);
+		int location_reward=0;
 	}
 
 	memcpy(&(mem->buffer[mem->size]), ptr, realsize);
