@@ -192,7 +192,7 @@ int main() {
 
 		curl_data.buffer =  (char *) malloc(1);
 		curl_data.size = 0;
-    url.latitude = 82.8628;
+    url.latitude = -82.8628;
   	url.longitude = 135.0000;
 
 		/* initialize locations */
