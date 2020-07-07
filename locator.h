@@ -5,8 +5,6 @@
 #include "./curl/curl.h"
 #include "./curl/easy.h"
 
-
-
 #define BUFSIZE 256
 
 /* standard data-chunk-reading structure used by libcurl */
