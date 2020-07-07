@@ -220,7 +220,7 @@ int main() {
 				curl_easy_strerror(res)
 				);
 			//exit(1);
-      location_reward=0;
+    int location_reward=0;
 		}
 
 		/* At this point, the size of the data read is stored in curl_data.size
@@ -235,7 +235,7 @@ int main() {
 			fprintf(stderr, "Failed request from server: %s\n", url.address);
 			fprintf(stderr, "Retried status: %s\n", csv_field);
 			//exit(1);
-      location_reward=0;
+    int location_reward=0;
 		}
 
 		/* Get the latitude value & convert to double */
@@ -265,7 +265,7 @@ int main() {
     int timezone_reward = get_time_zone_reward();
   	//int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
 
-    if ((url.latitude != NULL) && (url.longitude !=NULL))
+    if ((url.latitude != 0) && (url.longitude !=0))
     {
     int location_reward = get_machine_coordinates_reward(url.latitude,url.longitude); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
     }
