@@ -23,7 +23,6 @@
 #define EARLIEST_ASIAN_TIMEZONE 5
 #define EARLIEST_EUROPEAN_TIMEZONE 0
 
-
 //Define Regional Rewards
 #define CARRIBEAN_REGION_REWARD 10
 #define SOUTH_AMERICAN_REGION_REWARD 10
@@ -31,14 +30,12 @@
 #define ASIAN_REGION_REWARD 10
 #define OTHER_REGION_REWARD 0
 
-
 //Define TOTAL_YESPOWER_REWARD 103.125 - NOT NEEDED ANY MORE
 
 //Define Machine Processor
 #define OS_ARM 0
 #define OS_WINDOWS 0
 #define OS_X86 0
-
 
 struct coordinate
 {
@@ -70,7 +67,6 @@ struct coordinate ASIAN_REGION;
 #define OS_X86 1
 #endif
 
-
 //Get Processor Reward %
 int get_processor_reward() {
 	if (OS_WINDOWS) {
@@ -86,7 +82,6 @@ int get_processor_reward() {
 		return 5;
 	}
 }
-
 
 //Get Machine Timezone
 int get_timezone() {
@@ -144,7 +139,6 @@ int get_machine_coordinates_reward(double latitude, double longitude)
 	}
 }
 
-
 //Main function
 int main() {
 
@@ -185,8 +179,6 @@ int main() {
 #endif
 
     //End of Cores
-
-
 		//locator Code
 		CURL* curl;
 		CURLcode res;
@@ -292,7 +284,8 @@ int main() {
     total_percentage_reward=total_percentage_reward-5; //Penalize a CPU by 5% if it can't be geo-located
     }
     */
-    int opt = (int)total_percentage_reward; //Generating optimization score o as an integer
+
+		int opt = (int)total_percentage_reward; //Generating optimization score o as an integer
     printf("Total Percentage Reward: %d \n", opt);
 
     //Integrate optimizer to ensure people randomly to set hash from opt score
