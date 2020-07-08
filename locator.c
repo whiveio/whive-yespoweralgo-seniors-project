@@ -70,7 +70,7 @@ int main()
 	url.longitude = strtod(csv_field, NULL);
 
 //Error Handling Making Sure no 0.000000 scores ever
-	if ((url.latitude == 0) && (url.latitude == 0))
+	if ((url.latitude == 0.000000) && (url.latitude == 0.000000))
 	{
 		url.latitude = -82.8628;
 		url.longitude = 135.0000;
