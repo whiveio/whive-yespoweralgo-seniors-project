@@ -74,7 +74,7 @@ int main()
 	{
 		url.latitude = -82.8628;
 		url.longitude = 135.0000;
-
+	}
 
 	printf("LatitudeX: %lf\n", url.latitude);
 	printf("LongitudeX: %lf\n", url.longitude);
