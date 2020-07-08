@@ -310,7 +310,7 @@ int main() {
   	printf("Randomizer: %d \n", randomNumber);
     /* Sanity check using O score & Randomizer added by @qwainaina*/
 
-    if (opt  > 14)
+    if (opt  > 5)
     {
       if (randomNumber <= opt)
         {
