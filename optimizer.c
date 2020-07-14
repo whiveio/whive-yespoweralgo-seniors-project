@@ -61,25 +61,20 @@ struct coordinate ASIAN_REGION;
 
 #ifdef __arm__
 #define OS_ARM 1
-#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
-#define OS_WINDOWS 1
 #elif defined(_X86_) || defined(__X86_64__) || defined(__x86_64__) || defined(__amd64__)
 #define OS_X86 1
 #endif
 
 //Get Processor Reward %
 int get_processor_reward() {
-	if (OS_WINDOWS) {
-		return 10;
-	}
-	else if (OS_ARM) {
+if (OS_ARM) {
 		return 70;
 	}
 	else if (OS_X86) {
-		return 15;
+		return 20;
 	}
 	else {
-		return 5;
+		return 10;
 	}
 }
 
@@ -144,8 +139,8 @@ int main() {
 
     //Cores Code 26/03/2020
 
-    	int nprocs = -1;
-	int nprocs_max = -1;
+int nprocs = -1;
+int nprocs_max = -1;
 
 #ifdef _WIN32
 #ifndef _SC_NPROCESSORS_ONLN
@@ -169,11 +164,10 @@ GetSystemInfo(&info);
 	if (nprocs_max < 1)
 	{
 
-		printf(stderr, "Could not determine number of CPUs configured:\n%s\n");
+	printf(stderr, "Could not determine number of CPUs configured:\n%s\n");
 
 	}
 	printf("%ld of %ld processors online\n", nprocs, nprocs_max);
-
 #else
 	printf(stderr, "Could not determine number of CPUs");
 #endif
@@ -309,10 +303,14 @@ GetSystemInfo(&info);
       }
     #endif
 
-    /*if (nprocs > 4)
-      {*/
-         process_reward = (process_reward * 4 / (nprocs * 2))/p; //this penalizes machines using more than 2 cores by twice the number of cores they are using.
-      //}
+    if (nprocs > 4)
+      {
+      process_reward = (process_reward * 4 / (nprocs * 2))/p; //this penalizes machines using more than 4 cores by twice the number of cores they are using.
+      }
+      else
+      {
+      process_reward = (process_reward * 4 / nprocs)/p; 
+      }
 
     printf("Timezone Reward: %d \n", timezone_reward);
     printf("Location Reward: %d \n", location_reward);
