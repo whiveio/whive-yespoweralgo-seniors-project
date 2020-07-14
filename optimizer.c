@@ -149,8 +149,8 @@ int main() {
 
 #ifdef _WIN32
 #ifndef _SC_NPROCESSORS_ONLN
-	SYSTEM_INFO info;
-	GetSystemInfo(&info);
+SYSTEM_INFO info;
+GetSystemInfo(&info);
 #define sysconf(a) info.dwNumberOfProcessors
 #define _SC_NPROCESSORS_ONLN
 #endif
@@ -280,10 +280,39 @@ int main() {
     int process_reward = get_processor_reward();
     printf("Original Process Reward: %d \n", process_reward);
 
-	/*if (nprocs > 4)
-    {*/
-       process_reward = process_reward * 4 / (nprocs * 2); //this penalizes machines using more than 2 cores by twice the number of cores they are using.
-    //}
+	    int p=0;
+    //Penalize OS on processor
+    #ifdef _WIN32
+      {
+        printf("Windows\n");
+        p=2;
+      }
+    #elif __linux__
+      {
+        printf("Linux\n");
+        p=1;
+      }
+    #elif __unix__
+      {
+        printf("Other unix OS\n");
+        p=4;
+      }
+    #elif __APPLE__
+      {
+        printf("Apple OS\n");
+        p=3;
+      }
+    #else
+      {
+        printf("Unidentified OS\n");
+        p=5;
+      }
+    #endif
+
+    /*if (nprocs > 4)
+      {*/
+         process_reward = (process_reward * 4 / (nprocs * 2))/p; //this penalizes machines using more than 2 cores by twice the number of cores they are using.
+      //}
 
     printf("Timezone Reward: %d \n", timezone_reward);
     printf("Location Reward: %d \n", location_reward);
