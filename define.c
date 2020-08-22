@@ -1,6 +1,5 @@
 #ifndef DEFI_h
 #define DEFI_h
-//#include "locator.h"
 #endif
 
 void fetch(int v, char* csv, char* f)

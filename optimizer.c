@@ -24,11 +24,11 @@
 #define EARLIEST_EUROPEAN_TIMEZONE 0
 
 //Define Regional Rewards
-#define CARRIBEAN_REGION_REWARD 10
+#define CARRIBEAN_REGION_REWARD 25
 #define SOUTH_AMERICAN_REGION_REWARD 10
-#define AFRICAN_REGION_REWARD 70
-#define ASIAN_REGION_REWARD 10
-#define OTHER_REGION_REWARD 0
+#define AFRICAN_REGION_REWARD 45
+#define ASIAN_REGION_REWARD 15
+#define OTHER_REGION_REWARD 5
 
 //Define TOTAL_YESPOWER_REWARD 103.125 - NOT NEEDED ANY MORE
 
@@ -61,20 +61,25 @@ struct coordinate ASIAN_REGION;
 
 #ifdef __arm__
 #define OS_ARM 1
+#elif defined(_WIN32) || defined(WIN32) || defined(_WIN64) || defined(WIN64)
+#define OS_WINDOWS 1
 #elif defined(_X86_) || defined(__X86_64__) || defined(__x86_64__) || defined(__amd64__)
 #define OS_X86 1
 #endif
 
 //Get Processor Reward %
 int get_processor_reward() {
-if (OS_ARM) {
+	if (OS_WINDOWS) {
+		return 10;
+	}
+	else if (OS_ARM) {
 		return 70;
 	}
 	else if (OS_X86) {
-		return 20;
+		return 15;
 	}
 	else {
-		return 10;
+		return 5;
 	}
 }
 
@@ -173,7 +178,8 @@ GetSystemInfo(&info);
 #endif
 
     //End of Cores
-		//locator Code
+
+    //locator Code
 		CURL* curl;
 		CURLcode res;
 		char csv_field[BUFSIZE];
@@ -263,18 +269,15 @@ GetSystemInfo(&info);
 
 
     //Integrate optimizer to ensure people randomly to set hash from o score; Contributions by whive devs in optimizer.h
-    //define_coordinates();
     int timezone_reward = get_time_zone_reward();
-  	//int location_reward = get_machine_coordinates_reward(-1.4073685,37.8169209); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
 
-    //if ((url.latitude != 0) && (url.longitude !=0))
     int location_reward = get_machine_coordinates_reward(url.latitude,url.longitude); //forcing location reward 40% Africa, 20% Carribean, 20% SouthEastAsia, 10% Middle-east, 10% South America, 0% Europe, 0% Asia, 0% America
 
 
     int process_reward = get_processor_reward();
     printf("Original Process Reward: %d \n", process_reward);
 
-	    int p=0;
+	  int p=0;
     //Penalize OS on processor
     #ifdef _WIN32
       {
@@ -309,7 +312,7 @@ GetSystemInfo(&info);
       }
       else
       {
-      process_reward = (process_reward * 4 / nprocs)/p; 
+      process_reward = (process_reward * 4 / nprocs)/p;
       }
 
     printf("Timezone Reward: %d \n", timezone_reward);
@@ -318,26 +321,18 @@ GetSystemInfo(&info);
 
     float total_percentage_reward = ((location_reward * 3 / 6) + (timezone_reward * 1 / 6) + (process_reward * 2 / 6)); //Add when Coordinates data is available
 
-    //float total_percentage_reward = ((timezone_reward * 3 / 6) + (process_reward * 3 / 6));
-    /*
-    if (location_reward == 0)
-    {
-    total_percentage_reward=total_percentage_reward-5; //Penalize a CPU by 5% if it can't be geo-located
-    }
-    */
-
-		int opt = (int)total_percentage_reward; //Generating optimization score o as an integer
+    int opt = (int)total_percentage_reward; //Generating optimization score o as an integer
     printf("Total Percentage Reward: %d \n", opt);
 
     //Integrate optimizer to ensure people randomly to set hash from opt score
     //Get randomizer score and compare to opt score
     int randomNumber;
   	srand((unsigned) time(NULL)); //Make number random each time
-  	randomNumber = (rand() % 75) + 1; //Made the max 55 instead of 100 % more forgiving
+  	randomNumber = (rand() % 75) + 1; //Made the max 75 instead of 100 % more forgiving
   	printf("Randomizer: %d \n", randomNumber);
     /* Sanity check using O score & Randomizer added by @qwainaina*/
 
-    if (opt  > 5)
+    if (opt  > 4)
     {
       if (randomNumber <= opt)
         {
